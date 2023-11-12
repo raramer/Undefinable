@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UndefinableNullableIntTests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Bool_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Byte_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Char_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_DateTimeOffset_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_DateTime_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Decimal_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Double_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Enum_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Float_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Guid_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Int_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Long_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Bool_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Byte_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Char_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_DateTimeOffset_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_DateTime_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Decimal_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Double_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Enum_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Float_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Guid_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Int_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Long_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Sbyte_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Short_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_TimeSpan_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Uint_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Ulong_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Nullable_Ushort_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Object_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Sbyte_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Short_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_String_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_TimeSpan_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Uint_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Ulong_Tests.cs" />
+    <Compile Remove="UndefinableTests\Undefinable_Ushort_Tests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Undefinable\Undefinable.csproj" />
+  </ItemGroup>
+
+</Project>
