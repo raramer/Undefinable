@@ -17,19 +17,7 @@ dotnet add package Undefinable
 
 ## Why?
 
-We use the term "undefinable" because the value *might* be defined, similar to how a Nullable&lt;T&gt; might have a non-null value.  But unlike nullable, T is not restricted to "non-nullable value types".
-
-Why not just use null?  In many cases, null is a valid assignable value.  
-
-```csharp
-public class Data
-{ 
-    Undefinable<string> {  }
-}
-
- { "data": { "}
- }
- ```
+We use the term "undefinable" because the value might be defined, similar to how a Nullable&lt;T&gt; might have a non-null value.  But unlike nullable, T is not restricted to "non-nullable value types", and allows for null as a defined value.
 
 ## How do I use it
 
@@ -213,4 +201,4 @@ This example tests a SetPassword api method.  Because only the test data varies,
 
 ## Serialization
 
-There currently isn't a great story for serialization without adding dependencies on third-party nuget packages. For now I suggest avoiding using an Undefinable<T> in situations where it might be serialized.
+There currently isn't a great story for serialization without adding dependencies on third-party nuget packages. For now, avoid using an Undefinable&lt;T&gt; in situations where it might be serialized.
