@@ -7,7 +7,7 @@
     <Description>Represent a value as undefined instead of reserving a specific assigned value as "this is undefined".</Description>
     <PackageProjectUrl>https://github.com/raramer/Undefinable</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>undefinable;undefined;netstandard2</PackageTags>
+    <PackageTags>undefinable;undefined;unspecified;specified;netstandard2</PackageTags>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>0.0.0</Version>
   </PropertyGroup>
