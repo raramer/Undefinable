@@ -80,35 +80,30 @@ We use the term "undefinable" because the value might be defined, similar to how
     }
     ```
 
-### Check *IsDefined* Property
+### *IsDefined* Property
 
 * returns true when a value is assigned
 
     ```csharp
     Undefinable<string> myString = "my string";
-    var isDefined = myString.IsDefined;
-
-    // isDefined => true
+    var isDefined = myString.IsDefined; // true
     ```
 
 * returns false when no value is assigned
 
     ```csharp
     Undefinable<string> myString = default;
-    var isDefined = myString.IsDefined;
-
-    // isDefined => false 
+    var isDefined = myString.IsDefined; // false
     ```
 
-### Get *Value* Property
+### *Value* Property / Implicit Conversion
 
 * **When *IsDefined* = true**, the assigned value will be returned.
 
     ```csharp
     Undefinable<string> myString = "my string";
-    var value = myString.Value;
-    
-    // value => "my string"
+    var value = myString.Value; // "my string"
+    string implicitValue = myString; // "my string"
     ``` 
 
 * **When *IsDefined* = false**, an `InvalidOperationException` will be thrown.
@@ -116,26 +111,46 @@ We use the term "undefinable" because the value might be defined, similar to how
     ```csharp
     Undefinable<string> myString = default;
     var value = myString.Value; // throws an InvalidOperationException 
+    string implicitValue = myString; // throws an InvalidOperationException
     ``` 
 
-### Calling ToString() Method
+### *GetValueOrDefault* Method
+Retrieves the Value of the current _Undefinable&lt;T&gt;_ object, or the default value.
+
+* **When *IsDefined* = true**, the assigned value will be returned.
+
+    ```csharp
+    Undefinable<string> myString = "my string";
+    myString.GetValueOrDefault(); // "my string"
+    myString.GetValueOrDefault("my default"); // "my string"
+    myString.GetValueOrDefault(() => "my default"); // "my string"
+    await myString.GetValueOrDefaultAsync(async () => Task.FromResult("my default")); // "my string"
+    ``` 
+
+* **When *IsDefined* = false**, the (specified) default value will be returned. 
+
+    ```csharp
+    Undefinable<string> myString = default;
+    myString.GetValueOrDefault(); // null
+    myString.GetValueOrDefault("my default"); // "my default"
+    myString.GetValueOrDefault(() => "my default"); // "my default"
+    await myString.GetValueOrDefaultAsync(async () => Task.FromResult("my default")); // "my default"
+    ``` 
+
+### *ToString* Method
 
 * **When *IsDefined* = true**, the assigned value's ToString() result will be returned.  If null, then null will be returned.
 
     ```csharp
     Undefinable<string> myString = "my string";
-    var toString = myString.ToString();
-        
-    // toString => "my string"
+    myString.ToString(); // "my string"
     ``` 
 
-* **When *IsDefined* = false**, the *ToString()* method will return "{undefined}".  
+* **When *IsDefined* = false**, the *ToString()* method will return "&lt;undefined&gt;".  
     
     ```csharp
     Undefinable<string> myString = default;
-    var toString = myString.ToString();
-
-    // toString => "<undefined>"
+    myString.ToString(); // "<undefined>"
     ``` 
 
 ## Practical Example
@@ -146,21 +161,28 @@ This example tests a SetPassword api method.  Because only the test data varies,
    public class SetPasswordTests
    {
        [Fact]
-       public void PasswordIsNull() => Test(password: null, expectedError: "password is required");
+       public void Password_IsNull() => Test(password: null, expectedError: "password is required");
+
        [Fact]
-       public void PasswordIsEmpty() => Test(password: string.Empty, expectedError: "password is invalid");
+       public void Password_IsEmpty() => Test(password: string.Empty, expectedError: "password is invalid");
+
        [Fact]
-       public void PasswordIsTooShort() => Test(password: "sh0rt.", expectedError: "password is too short");
+       public void Password_IsTooShort() => Test(password: "Sh0rt!", expectedError: "password is too short");
+
        [Fact]
-       public void PasswordIsTooWeak() => Test(password: "weakpassword", expectedError: "password is too weak");
+       public void Password_IsTooWeak() => Test(password: "weakpassword", expectedError: "password is too weak");
+
        [Fact]
-       public void PasswordIsStrong() => Test(password: RandomStrongPassword);
+       public void Password_IsStrong() => Test(password: RandomStrongPassword);
+
        [Fact]
-       public void UserIdIsNull() => Test(userId: null, expectedError: "userId is required");
+       public void UserId_IsNull() => Test(userId: null, expectedError: "userId is required");
+
        [Fact]
-       public void UserIdIsEmpty() => Test(userId: string.Empty, expectedError: "userId is invalid");
+       public void UserId_IsEmpty() => Test(userId: string.Empty, expectedError: "userId is invalid");
+
        [Fact]
-       public void UserIdDoesNotExist() => Test(userId: Guid.NewGuid().ToString("n"), expectedError: "userId not found");
+       public void UserId_DoesNotExist() => Test(userId: "does not exist", expectedError: "userId not found");
 
        private IApi _api = new Api();
        private string RandomUsername => "user" + DateTime.Now.Ticks;
@@ -173,15 +195,13 @@ This example tests a SetPassword api method.  Because only the test data varies,
        {
            /* ARRANGE */
            // if userId is not defined, create a new user
-           if (!userId.IsDefined)
-               userId = _api.CreateUser(RandomUsername, RandomStrongPassword).UserId;
+           userId = userId.GetValueOrDefault(() => _api.CreateUser(RandomUsername, RandomStrongPassword).UserId);
 
            // if password is not defined, define a strong one
-           if (!password.IsDefined)
-               password = RandomStrongPassword;
+           password = password.GetValueOrDefault(RandomStrongPassword);
 
            /* ACT */
-           var setPasswordResult = _api.SetPassword(userId.Value, password.Value);
+           var setPasswordResult = _api.SetPassword(userId, password);
 
            /* ASSERT */
            if (expectedError.IsDefined)

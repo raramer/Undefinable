@@ -1,3 +1,5 @@
+using Newtonsoft.Json.Linq;
+
 namespace Undefinable.Tests.UndefinableTests
 {
     public abstract class UndefinableTestBase<TValue> : UndefinableTestData
@@ -65,6 +67,15 @@ namespace Undefinable.Tests.UndefinableTests
 
             // assert ToString
             Assert.Equal(value?.ToString(), undefinable.ToString());
+
+            // assert implicit conversion
+            Assert.Equal(value, (TValue)undefinable);
+
+            // assert ValueOrDefault
+            Assert.Equal(value, undefinable.GetValueOrDefault());
+            Assert.Equal(value, undefinable.GetValueOrDefault(default(TValue)));
+            Assert.Equal(value, undefinable.GetValueOrDefault(() => default(TValue)));
+            Assert.Equal(value, undefinable.GetValueOrDefaultAsync(() => Task.FromResult(default(TValue))).GetAwaiter().GetResult());
         }
 
         [Fact]
@@ -100,6 +111,15 @@ namespace Undefinable.Tests.UndefinableTests
 
             // assert ToString
             Assert.Equal(Undefinable<TValue>.Undefined_ToString, undefinable.ToString());
+
+            // assert implicit conversion
+            Assert.Throws<InvalidOperationException>(() => (TValue)undefinable);
+
+            // assert ValueOrDefault
+            Assert.Equal(default(TValue), undefinable.GetValueOrDefault());
+            Assert.Equal(default(TValue), undefinable.GetValueOrDefault(default(TValue)));
+            Assert.Equal(default(TValue), undefinable.GetValueOrDefault(() => default(TValue)));
+            Assert.Equal(default(TValue), undefinable.GetValueOrDefaultAsync(() => Task.FromResult(default(TValue))).GetAwaiter().GetResult());
         }
 
         protected static IEnumerable<object?[]> GetImplicitParameterTestData<T>()

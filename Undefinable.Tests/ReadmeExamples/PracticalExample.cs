@@ -7,21 +7,28 @@ public class PracticalExample
     public class SetPasswordTests
     {
         [Fact]
-        public void PasswordIsNull() => Test(password: null, expectedError: "password is required");
+        public void Password_IsNull() => Test(password: null, expectedError: "password is required");
+
         [Fact]
-        public void PasswordIsEmpty() => Test(password: string.Empty, expectedError: "password is invalid");
+        public void Password_IsEmpty() => Test(password: string.Empty, expectedError: "password is invalid");
+
         [Fact]
-        public void PasswordIsTooShort() => Test(password: "sh0rt.", expectedError: "password is too short");
+        public void Password_IsTooShort() => Test(password: "Sh0rt!", expectedError: "password is too short");
+
         [Fact]
-        public void PasswordIsTooWeak() => Test(password: "weakpassword", expectedError: "password is too weak");
+        public void Password_IsTooWeak() => Test(password: "weakpassword", expectedError: "password is too weak");
+
         [Fact]
-        public void PasswordIsStrong() => Test(password: RandomStrongPassword);
+        public void Password_IsStrong() => Test(password: RandomStrongPassword);
+
         [Fact]
-        public void UserIdIsNull() => Test(userId: null, expectedError: "userId is required");
+        public void UserId_IsNull() => Test(userId: null, expectedError: "userId is required");
+
         [Fact]
-        public void UserIdIsEmpty() => Test(userId: string.Empty, expectedError: "userId is invalid");
+        public void UserId_IsEmpty() => Test(userId: string.Empty, expectedError: "userId is invalid");
+
         [Fact]
-        public void UserIdDoesNotExist() => Test(userId: Guid.NewGuid().ToString("n"), expectedError: "userId not found");
+        public void UserId_DoesNotExist() => Test(userId: "does not exist", expectedError: "userId not found");
 
         private IApi _api = new Api();
         private string RandomUsername => "user" + DateTime.Now.Ticks;
@@ -33,17 +40,14 @@ public class PracticalExample
             Undefinable<string> expectedError = default)
         {
             /* ARRANGE */
-
             // if userId is not defined, create a new user
-            if (!userId.IsDefined)
-                userId = _api.CreateUser(RandomUsername, RandomStrongPassword).UserId;
+            userId = userId.GetValueOrDefault(() => _api.CreateUser(RandomUsername, RandomStrongPassword).UserId);
 
             // if password is not defined, define a strong one
-            if (!password.IsDefined)
-                password = RandomStrongPassword;
+            password = password.GetValueOrDefault(RandomStrongPassword);
 
             /* ACT */
-            var setPasswordResult = _api.SetPassword(userId.Value, password.Value);
+            var setPasswordResult = _api.SetPassword(userId, password);
 
             /* ASSERT */
             if (expectedError.IsDefined)
