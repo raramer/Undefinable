@@ -36,7 +36,7 @@ We use the term "undefinable" because the value might be defined, similar to how
     myString = Undefined.String; // available for some well-known types
     ```
 
-* **As a variable with an assigned value**
+* **As a variable with a defined value**
 
     ```csharp
     Undefinable<string> myString;
